@@ -1,8 +1,9 @@
 import {isDate,isObject} from './util'
 
-//JSON.stringify有可能把一些常见字符转为特殊字符，所以需要转回来
-//encodeURIComponent() 函数可把字符串作为 URI 组件进行编码。
-//该方法不会对 ASCII 字母和数字进行编码，也不会对这些 ASCII 标点符号进行编码： - _ . ! ~ * ' ( ) 。
+//encodeURIComponent() 函数可把字符串作为 URI 组件进行编码
+//该方法不会对 ASCII 字母和数字进行编码，也不会对这些 ASCII 标点符号进行编码： - _ . ! ~ * ' ( ) 
+//对于字符 @ : $ , [ ]，我们是允许出现在 url 中的，不希望被 encode
+//空格字符会被替换成 +
 function encode (val: string): string {
     return encodeURIComponent(val)
       .replace(/%40/g, '@')

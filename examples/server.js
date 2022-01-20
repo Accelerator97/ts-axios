@@ -73,6 +73,25 @@ router.get('/base/get',function(req,res){
   res.json(req.query)
 })
 
+//data是普通对象转为的JSON字符串
+router.post('/base/post', function(req, res) {
+  res.json(req.body)
+})
+
+//data是Int32Array类型的数据
+router.post('/base/buffer', function(req, res) {
+  let msg = []
+  req.on('data', (chunk) => {
+    if (chunk) {
+      msg.push(chunk)
+    }
+  })
+  req.on('end', () => {
+    let buf = Buffer.concat(msg)
+    res.json(buf.toJSON())
+  })
+})
+
 app.use(router) 
 
 const port = process.env.PORT || 8085
