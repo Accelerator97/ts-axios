@@ -53,8 +53,14 @@ export interface Axios {
 
 //混合类型的接口，拥有Axios下的各种方法
 export interface AxiosInstance extends Axios {
-    //定义一个函数 接收config 返回AxiosPromise
+    //定义一个函数 接收config 返回AxiosPromise,支持传入一个参数
     (config:AxiosRequestConfig):AxiosPromise
+    //支持传入两个参数
+    (url:string,config?:AxiosRequestConfig):AxiosPromise
 }
+
+
+
+
 
 
