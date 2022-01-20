@@ -1,9 +1,11 @@
 import { AxiosPromise, AxiosRequestConfig, AxiosResponse } from "./types";
 import { parseHeaders } from './helpers/headers'
+import { createError } from "./helpers/error";
 
 export default function xhr(config: AxiosRequestConfig): AxiosPromise {
     //Promise封装一个异步请求，用户可以通过then处理服务端返回的数据
     return new Promise((resolve, reject) => {
+        //config是用户设置的请求信息
         const { data = null, url, method = 'get', headers, responseType, timeout } = config
         const request = new XMLHttpRequest()
         //如果用户指定了返回数据的类型
@@ -42,7 +44,15 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
                 if (response.status >= 200 && response.status < 300) {
                     resolve(response)
                 } else {
-                    reject(new Error(`Request failed with status code ${response.status}`))
+                    reject(
+                        createError(
+                            `Request failed with status code ${response.status}`,
+                            config,
+                            null,
+                            request,
+                            response
+                        )
+                    )
                 }
             }
         }
@@ -50,11 +60,25 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
 
         //处理网络错误
         request.onerror = function handleError() {
-            reject(new Error('network error'))
+            reject(
+                createError(
+                    'Newwork Error',
+                    config,
+                    null,
+                    request
+                )
+            )
         }
 
         request.ontimeout = function handleTimeout() {
-            reject(new Error(`Timeout of ${timeout} ms exceeded`))
+            reject(
+                createError(
+                    `Timeout of ${config.timeout} ms exceeded`,
+                    config,
+                    'ECONNABORTED',
+                    request
+                )
+            )
         }
 
         //如果传入的data为空，请求headers配置Content-Type是没有意义的，所以删除掉
