@@ -9,6 +9,8 @@ export interface AxiosRequestConfig{
     //在请求中指定服务器返回的响应数据类型
     //XMLHttpRequestResponseType 类型，它的定义是 "" | "arraybuffer" | "blob" | "document" | "json" | "text" 
     responseType?:XMLHttpRequestResponseType
+    //设置请求的超时时间，当请求发送后超过某个时间后仍然没收到响应，则请求自动终止，并触发 timeout 事件
+    timeout?:number
 }
 
 //处理服务端响应的数据，支持Promise链式调用

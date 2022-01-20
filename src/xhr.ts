@@ -1,14 +1,18 @@
 import { AxiosPromise, AxiosRequestConfig, AxiosResponse } from "./types";
-import {parseHeaders} from './helpers/headers'
+import { parseHeaders } from './helpers/headers'
 
 export default function xhr(config: AxiosRequestConfig): AxiosPromise {
     //Promise封装一个异步请求，用户可以通过then处理服务端返回的数据
-    return new Promise((resovle) => {
-        const { data = null, url, method = 'get', headers, responseType } = config
+    return new Promise((resolve, reject) => {
+        const { data = null, url, method = 'get', headers, responseType, timeout } = config
         const request = new XMLHttpRequest()
         //如果用户指定了返回数据的类型
         if (responseType) {
             request.responseType = responseType
+        }
+        //如果用户指定请求的超时时间，超过一定时间没有响应触发timeout事件
+        if (timeout) {
+            request.timeout = timeout
         }
 
         //true开启异步
@@ -18,19 +22,39 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
             if (request.readyState !== 4) {
                 return
             }
+            if (request.status === 0) {
+                return
+            }
             //获取所有响应头
             const responseHeaders = parseHeaders(request.getAllResponseHeaders())
             //获取返回的响应数据
             const responseData = responseType && responseType !== 'text' ? request.response : request.responseText
-            const response:AxiosResponse = {
-                data:responseData,
-                status:request.status,
-                statusText:request.statusText,
-                headers:responseHeaders,
+            const response: AxiosResponse = {
+                data: responseData,
+                status: request.status,
+                statusText: request.statusText,
+                headers: responseHeaders,
                 config,
                 request
             }
-            resovle(response)
+            handleResponse(response)
+            function handleResponse(response: AxiosResponse) {
+                if (response.status >= 200 && response.status < 300) {
+                    resolve(response)
+                } else {
+                    reject(new Error(`Request failed with status code ${response.status}`))
+                }
+            }
+        }
+
+
+        //处理网络错误
+        request.onerror = function handleError() {
+            reject(new Error('network error'))
+        }
+
+        request.ontimeout = function handleTimeout() {
+            reject(new Error(`Timeout of ${timeout} ms exceeded`))
         }
 
         //如果传入的data为空，请求headers配置Content-Type是没有意义的，所以删除掉
@@ -41,6 +65,8 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
                 request.setRequestHeader(name, headers[name])
             }
         })
+
+
         request.send(data)
     })
 
