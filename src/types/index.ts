@@ -1,7 +1,7 @@
-export type Method = 'get' | 'GET' | 'detele' | 'DELETE' | 'head' | 'HEAD' | 'options' | 'OPTIONS' | 'post' | 'POST' | 'put' | 'PUT' | 'patch' | 'PATCH'
+export type Method = 'get' | 'GET' | 'delete' | 'DELETE' | 'head' | 'HEAD' | 'options' | 'OPTIONS' | 'post' | 'POST' | 'put' | 'PUT' | 'patch' | 'PATCH'
 
 export interface AxiosRequestConfig {
-    url: string,
+    url?: string,
     method?: Method,
     data?: any
     params?: any,
@@ -36,6 +36,25 @@ export interface AxiosError extends Error {
     request?: any,
     response?: AxiosResponse,
     isAxiosError: boolean
+}
+
+
+//首先定义一个 Axios 类型接口，它描述了 Axios 类中的公共方法，接着定义了 AxiosInstance 接口继承 Axios，它就是一个混合类型的接口
+export interface Axios {
+    request(config:AxiosRequestConfig):AxiosPromise
+    get(url:string,config?:AxiosRequestConfig):AxiosPromise
+    delete(url:string,config?:AxiosRequestConfig):AxiosPromise
+    head(url:string,config?:AxiosRequestConfig):AxiosPromise
+    options(url:string,config?:AxiosRequestConfig):AxiosPromise
+    post(url:string,data?:any,config?:AxiosRequestConfig):AxiosPromise
+    put(url:string,data?:any,config?:AxiosRequestConfig):AxiosPromise
+    patch(url:string,data?:any,config?:AxiosRequestConfig):AxiosPromise
+}
+
+//混合类型的接口，拥有Axios下的各种方法
+export interface AxiosInstance extends Axios {
+    //定义一个函数 接收config 返回AxiosPromise
+    (config:AxiosRequestConfig):AxiosPromise
 }
 
 

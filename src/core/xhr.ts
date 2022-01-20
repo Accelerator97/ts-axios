@@ -1,6 +1,6 @@
-import { AxiosPromise, AxiosRequestConfig, AxiosResponse } from "./types";
-import { parseHeaders } from './helpers/headers'
-import { createError } from "./helpers/error";
+import { AxiosPromise, AxiosRequestConfig, AxiosResponse } from "../types";
+import { parseHeaders } from '../helpers/headers'
+import { createError } from "../helpers/error";
 
 export default function xhr(config: AxiosRequestConfig): AxiosPromise {
     //Promise封装一个异步请求，用户可以通过then处理服务端返回的数据
@@ -18,7 +18,7 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
         }
 
         //true开启异步
-        request.open(method.toUpperCase(), url, true)
+        request.open(method.toUpperCase(), url!, true)
 
         request.onreadystatechange = function handleLoad() {
             if (request.readyState !== 4) {
@@ -89,8 +89,7 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
                 request.setRequestHeader(name, headers[name])
             }
         })
-
-
+        
         request.send(data)
     })
 
