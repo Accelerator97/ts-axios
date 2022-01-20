@@ -1,7 +1,7 @@
 import axios from '../../src/index'
 
 
-//对url参数进行拼接
+//1.对url参数进行拼接
 axios({
     method: 'get',
     url: '/base/get',
@@ -64,7 +64,7 @@ axios({
 })
 
 
-//对data参数进行处理，普通对象转为JSON字符串
+//2.对data参数进行处理，普通对象转为JSON字符串
 axios({
     method: 'post',
     url: '/base/post',
@@ -82,3 +82,26 @@ axios({
     url: '/base/buffer',
     data: arr
 })
+
+//3.对headers进行设置 如果data是普通对象，默认设置为 'Content-Type': 'application/json;charset=UTF-8'
+axios({
+    method: 'post',
+    url: '/base/post',
+    headers: {
+        'content-type': 'application/json;charset=UTF-8'
+    },
+    data: {
+        name: 'Ben',
+        birthYear: 1997
+    }
+})
+
+const paramsString = 'q=URLUtils.searchParams&topic=api'
+const searchParams = new URLSearchParams(paramsString)
+
+axios({
+    method: 'post',
+    url: '/base/post',
+    data: searchParams
+})
+
