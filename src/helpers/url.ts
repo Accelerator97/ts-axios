@@ -1,6 +1,8 @@
 import {isDate,isObject} from './util'
 
-//对于一些常用字符串 返回特殊字符串
+//JSON.stringify有可能把一些常见字符转为特殊字符，所以需要转回来
+//encodeURIComponent() 函数可把字符串作为 URI 组件进行编码。
+//该方法不会对 ASCII 字母和数字进行编码，也不会对这些 ASCII 标点符号进行编码： - _ . ! ~ * ' ( ) 。
 function encode (val: string): string {
     return encodeURIComponent(val)
       .replace(/%40/g, '@')
@@ -44,7 +46,7 @@ export function buildURL(url:string,params?:any){
     //parts的每一项通过&来连接
     let serializeParams = parts.join('&')
     if(serializeParams){
-        //看是否有哈希标识符，有的话要忽略#
+        //看是否有哈希标识符，有的话要忽略#及#后面的内容
         const markIndex= url.indexOf('#')
         if(markIndex !== -1){
             url = url.slice(0,markIndex)
