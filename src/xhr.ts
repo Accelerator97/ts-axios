@@ -1,5 +1,6 @@
-import { resolve } from "dns";
 import { AxiosPromise, AxiosRequestConfig, AxiosResponse } from "./types";
+import {parseHeaders} from './helpers/headers'
+
 export default function xhr(config: AxiosRequestConfig): AxiosPromise {
     //Promise封装一个异步请求，用户可以通过then处理服务端返回的数据
     return new Promise((resovle) => {
@@ -18,7 +19,7 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
                 return
             }
             //获取所有响应头
-            const responseHeaders = request.getAllResponseHeaders()
+            const responseHeaders = parseHeaders(request.getAllResponseHeaders())
             //获取返回的响应数据
             const responseData = responseType && responseType !== 'text' ? request.response : request.responseText
             const response:AxiosResponse = {
