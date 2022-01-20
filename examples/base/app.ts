@@ -105,3 +105,27 @@ axios({
     data: searchParams
 })
 
+//4.Promise封装axios，实现链式调用
+axios({
+    method: 'post',
+    url: '/base/post',
+    data: {
+        name: 'dashabi1',
+        year: 2022
+    }
+}).then((res) => {
+    console.log(res)
+})
+
+axios({
+    method: 'post',
+    url: '/base/post',
+    responseType: 'json',
+    data: {
+        name: 'dashabi2',
+        year: 2022
+    }
+}).then((res) => {
+    console.log(res)
+})
+

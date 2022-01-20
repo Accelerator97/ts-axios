@@ -7,7 +7,6 @@ function normalizeHeaderName(headers:any,normalizeName:any):void{
     Object.keys(headers).forEach(name=>{
         //如果传入的是content-type 标准的是应该区分大小写Content-Type 
         if(name !== normalizeName && name.toUpperCase() === normalizeName.toUpperCase()){
-            console.log('规范大小写，删除用户设置的content-type')
             headers[normalizeName] = headers[name]
             delete headers[name]
         }
