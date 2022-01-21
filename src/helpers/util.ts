@@ -18,7 +18,31 @@ export function isPlainObject(val: any): val is Object {
 export function extend<T, U>(to: T, from: U): T & U {
     //遍历from上的所有属性
     for (const key in from) {
-        ;(to as T & U)[key] = from[key] as any
+        ; (to as T & U)[key] = from[key] as any
     }
     return to as T & U
+}
+
+//普通对象的深拷贝和合并，支持传入多个参数
+//但是深拷贝的对象result[key] args[0].key会被args[1].key结果覆盖掉
+export function deepMerge(...args: any[]): any {
+    let result = Object.create(null)
+    args.forEach(arg => {
+        if (arg) {
+            //Object.keys只遍历自身上的属性或者方法
+            Object.keys(arg).forEach(key => {
+                const val = arg[key]
+                if (isPlainObject(val)) { //情况1：如果val是对象，进行递归
+                    if (isPlainObject(result[key])) {    //递归之前，判断result[key]是否为对象再进行赋值（因为支持多个参数传递）
+                        result[key] = deepMerge(result[key], val)
+                    } else {
+                        result[key] = deepMerge({}, val)
+                    }
+                } else { //情况2：如果val不是对象
+                    result[key] = val
+                }
+            })
+        }
+    })
+    return result
 }

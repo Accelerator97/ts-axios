@@ -11,6 +11,7 @@ export interface AxiosRequestConfig {
     responseType?: XMLHttpRequestResponseType
     //设置请求的超时时间，当请求发送后超过某个时间后仍然没收到响应，则请求自动终止，并触发 timeout 事件
     timeout?: number
+    [propName:string]:any
 }
 
 //处理服务端响应的数据，支持Promise链式调用
@@ -44,6 +45,7 @@ export interface AxiosError extends Error {
 //首先定义一个 Axios 类型接口，它描述了 Axios 类中的公共方法，接着定义了 AxiosInstance 接口继承 Axios，它就是一个混合类型的接口
 //接口添加泛型参数
 export interface Axios {
+    defaults: AxiosRequestConfig
     interceptors: {
         request: AxiosInterceptorManager<AxiosRequestConfig>
         response: AxiosInterceptorManager<AxiosResponse>

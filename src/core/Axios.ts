@@ -1,6 +1,7 @@
-import { AxiosRequestConfig, AxiosPromise, Method, AxiosResponse, ResolvedFn, RejectedFn, AxiosInterceptorManager } from "../types";
+import { AxiosRequestConfig, AxiosPromise, Method, AxiosResponse, ResolvedFn, RejectedFn } from "../types";
 import dispatchRequest from "./dispatchRequest";
 import InterceptorManager from "./InterceptorManager";
+import mergeConfig from "./mergeConfig";
 
 interface Interceptors {
     request: InterceptorManager<AxiosRequestConfig>,
@@ -15,10 +16,12 @@ interface PromiseChain {
 
 //文件名首字母大写表明它是一个类
 export default class Axios {
+    defaults:AxiosRequestConfig
     //定义一个interceptors对象，这个对象拥有两个属性request和response。然后在constructor中进行初始化new InterceptorManager 
     //InterceptorManager 这个类上有use方法、forEach方法和eject方法
     interceptors: Interceptors
-    constructor() {
+    constructor(initConfig:AxiosRequestConfig) {
+        this.defaults = initConfig
         this.interceptors = {
             //request是对config进行操作，response是对响应信息进行操作
             request: new InterceptorManager<AxiosRequestConfig>(),
@@ -41,6 +44,8 @@ export default class Axios {
             //如果 url 不是字符串类型，则说明我们传入的就是单个参数，且 url 就是 config，因此把 url 赋值给 config
             config = url
         }
+        //根据用户传入的配置和默认配置进行合并
+        config = mergeConfig(this.defaults, config)
 
         //构造一个 PromiseChain 类型的数组 chain，并把 dispatchRequest 函数赋值给 resolved 属性
         const chain: PromiseChain[] = [{

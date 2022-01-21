@@ -1,4 +1,5 @@
-import { isPlainObject } from "./util";
+import { Method } from "../types";
+import { deepMerge, isPlainObject } from "./util";
 
 function normalizeHeaderName(headers: any, normalizeName: any): void {
     if (!headers) {
@@ -45,4 +46,21 @@ export function parseHeaders(headers: string): any {
         parsed[key] = val
     })
     return parsed
+}
+
+//合并用户传入的配置和默认配置之后，对headers进行压缩，压缩成一级
+export function flattenHeaders(headers:any,method:Method):any{
+    if(!headers){
+        return headers
+    }
+    headers = deepMerge(headers.common || {}, headers[method] || {},headers)
+
+    const methodsToDelete = ['delete', 'get', 'head', 'options', 'post', 'put', 'patch', 'common']
+    //删掉headers中不需要的字段 比如headers[method]
+    methodsToDelete.forEach(method =>{
+        delete headers[method]
+    })
+
+    return headers
+    
 }
