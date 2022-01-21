@@ -6,7 +6,8 @@ interface Interceptor<T>{
     rejected?:RejectedFn
 }
 
-
+//定义了一个 InterceptorManager 泛型类，内部维护一个私有属性interceptors
+//该类还提供了三个方法use/forEach/eject
 export default class InterceptorManager<T>{
     //私有属性，实际上是存储拦截器，实际上是一个数组
     private interceptors:Array<Interceptor<T> | null>

@@ -55,6 +55,9 @@ registerErrorRouter()
 //demo extend所需路由
 registerExtendRouter()
 
+//demo interceptor所需路由
+registerInterceptorRrouter()
+
 app.use(router)
 
 const port = process.env.PORT || 8085
@@ -159,11 +162,11 @@ function registerExtendRouter() {
   })
 }
 
-// function registerInterceptorRrouter() {
-//   router.get('/interceptor/get', function (req, res) {
-//     res.end('hello ')
-//   })
-// }
+function registerInterceptorRrouter() {
+  router.get('/interceptor/get', function (req, res) {
+    res.end('hello ')
+  })
+}
 
 // function registerConfigRouter() {
 //   router.post('/config/post', function (req, res) {

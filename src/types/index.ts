@@ -44,42 +44,45 @@ export interface AxiosError extends Error {
 //首先定义一个 Axios 类型接口，它描述了 Axios 类中的公共方法，接着定义了 AxiosInstance 接口继承 Axios，它就是一个混合类型的接口
 //接口添加泛型参数
 export interface Axios {
-    request<T = any>(config:AxiosRequestConfig):AxiosPromise<T>
-    get<T = any>(url:string,config?:AxiosRequestConfig):AxiosPromise<T>
-    delete<T = any>(url:string,config?:AxiosRequestConfig):AxiosPromise<T>
-    head<T = any>(url:string,config?:AxiosRequestConfig):AxiosPromise<T>
-    options<T = any>(url:string,config?:AxiosRequestConfig):AxiosPromise<T>
-    post<T = any>(url:string,data?:any,config?:AxiosRequestConfig):AxiosPromise<T>
-    put<T = any>(url:string,data?:any,config?:AxiosRequestConfig):AxiosPromise<T>
-    patch<T = any>(url:string,data?:any,config?:AxiosRequestConfig):AxiosPromise<T>
+    interceptors: {
+        request: AxiosInterceptorManager<AxiosRequestConfig>
+        response: AxiosInterceptorManager<AxiosResponse>
+    }
+    request<T = any>(config: AxiosRequestConfig): AxiosPromise<T>
+    get<T = any>(url: string, config?: AxiosRequestConfig): AxiosPromise<T>
+    delete<T = any>(url: string, config?: AxiosRequestConfig): AxiosPromise<T>
+    head<T = any>(url: string, config?: AxiosRequestConfig): AxiosPromise<T>
+    options<T = any>(url: string, config?: AxiosRequestConfig): AxiosPromise<T>
+    post<T = any>(url: string, data?: any, config?: AxiosRequestConfig): AxiosPromise<T>
+    put<T = any>(url: string, data?: any, config?: AxiosRequestConfig): AxiosPromise<T>
+    patch<T = any>(url: string, data?: any, config?: AxiosRequestConfig): AxiosPromise<T>
 }
 
 //混合类型的接口，拥有Axios下的各种方法
 //接口添加泛型参数
 export interface AxiosInstance extends Axios {
-    interceptors: any;
     //定义一个函数 接收config 返回AxiosPromise,支持传入一个参数
-    <T = any>(config:AxiosRequestConfig):AxiosPromise<T>
+    <T = any>(config: AxiosRequestConfig): AxiosPromise<T>
     //支持传入两个参数
-    <T = any>(url:string,config?:AxiosRequestConfig):AxiosPromise<T>
+    <T = any>(url: string, config?: AxiosRequestConfig): AxiosPromise<T>
 }
 
 //拦截器管理对象对外的接口
-//在这个 Promise 链的执行过程中，请求拦截器 resolve 函数处理的是 config 对象，而相应拦截器 resolve 函数处理的是 response 对象。
-//use接受的参数都为函数，所以定义两个函数接口
-export interface AxiosInterceptorManager<T>{
+//也就是说axios.interceptor下有两个属性request和response，他们都有use和eject方法,forEach方法不对外暴露
+//use方法接受两个参数:resolved和rejected,use接受的参数都为函数，所以定义两个函数接口
+export interface AxiosInterceptorManager<T> {
     //use返回一个id，供eject来删除拦截器
-    use(resolved:ResolvedFn<T>,rejected?:RejectedFn):number
-    eject(id:number):void
+    use(resolved: ResolvedFn<T>, rejected?: RejectedFn): number
+    eject(id: number): void
 }
 
-export interface ResolvedFn<T = any>{
+export interface ResolvedFn<T = any> {
     //如果直接返回T，说明是同步调用；返回Promise，说明是异步调用
-    (val:T):T | Promise<T>
+    (val: T): T | Promise<T>
 }
 
-export interface RejectedFn{
-    (err:any):any
+export interface RejectedFn {
+    (err: any): any
 }
 
 
