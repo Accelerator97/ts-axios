@@ -15,6 +15,7 @@ export interface AxiosRequestConfig {
 
 //处理服务端响应的数据，支持Promise链式调用
 //并且在then方法里拿到res对象，该对象应该包括：返回的数据data/状态码status/状态码信息statusText/响应头headers/请求配置对象config/请求的XMLHttpRequest对象实例request
+//接口添加泛型参数
 export interface AxiosResponse<T = any> {
     data: T,
     status: number,
@@ -26,6 +27,7 @@ export interface AxiosResponse<T = any> {
 
 //axios 函数返回的是一个 Promise 对象,可以定义一个 AxiosPromise 接口，它继承于 Promise<AxiosResponse> 这个泛型接口
 //当 axios 返回的是 AxiosPromise 类型，那么 resolve 函数中的参数就是一个 AxiosResponse 类型。
+//接口添加泛型参数
 export interface AxiosPromise<T = any> extends Promise<AxiosResponse<T>> { }
 
 
@@ -40,6 +42,7 @@ export interface AxiosError extends Error {
 
 
 //首先定义一个 Axios 类型接口，它描述了 Axios 类中的公共方法，接着定义了 AxiosInstance 接口继承 Axios，它就是一个混合类型的接口
+//接口添加泛型参数
 export interface Axios {
     request<T = any>(config:AxiosRequestConfig):AxiosPromise<T>
     get<T = any>(url:string,config?:AxiosRequestConfig):AxiosPromise<T>
@@ -52,13 +55,32 @@ export interface Axios {
 }
 
 //混合类型的接口，拥有Axios下的各种方法
+//接口添加泛型参数
 export interface AxiosInstance extends Axios {
+    interceptors: any;
     //定义一个函数 接收config 返回AxiosPromise,支持传入一个参数
     <T = any>(config:AxiosRequestConfig):AxiosPromise<T>
     //支持传入两个参数
     <T = any>(url:string,config?:AxiosRequestConfig):AxiosPromise<T>
 }
 
+//拦截器管理对象对外的接口
+//在这个 Promise 链的执行过程中，请求拦截器 resolve 函数处理的是 config 对象，而相应拦截器 resolve 函数处理的是 response 对象。
+//use接受的参数都为函数，所以定义两个函数接口
+export interface AxiosInterceptorManager<T>{
+    //use返回一个id，供eject来删除拦截器
+    use(resolved:ResolvedFn<T>,rejected?:RejectedFn):number
+    eject(id:number):void
+}
+
+export interface ResolvedFn<T = any>{
+    //如果直接返回T，说明是同步调用；返回Promise，说明是异步调用
+    (val:T):T | Promise<T>
+}
+
+export interface RejectedFn{
+    (err:any):any
+}
 
 
 
