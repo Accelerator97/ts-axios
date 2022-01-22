@@ -1,4 +1,7 @@
 import { AxiosRequestConfig } from "./types";
+import { processHeaders } from "./helpers/headers";
+import { transformRequestData, transformResponseData } from "./helpers/data";
+
 
 //common 表示对于任何类型的请求都要添加该属性，而 method 表示只有该类型请求方法才会添加对应的属性。
 const defaultConfig: AxiosRequestConfig = {
@@ -9,7 +12,22 @@ const defaultConfig: AxiosRequestConfig = {
             //Accept表示客户端（浏览器）希望接受的数据类型
             Accept: 'application/json, text/plain, */*'
         }
-    }
+    },
+    //默认配置添加了 transformRequest 和 transformResponse 两个字段
+    //它们的值是一个数组或者是一个函数
+
+    transformRequest: [
+        function (data: any, headers: any): any {
+            processHeaders(headers, data)
+            return transformRequestData(data)
+        }
+    ],
+
+    transformResponse: [
+        function (data: any): any {
+            return transformResponseData(data)
+        }
+    ]
 }
 
 const methodWithoutData = ['delete', 'get', 'head', 'options']

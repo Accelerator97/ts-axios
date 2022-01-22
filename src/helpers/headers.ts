@@ -7,6 +7,7 @@ function normalizeHeaderName(headers: any, normalizeName: any): void {
     }
     Object.keys(headers).forEach(name => {
         //如果传入的是content-type 标准的是应该区分大小写Content-Type 
+        //把content-type对应的值赋值给Content-Type，然后删除content-type这个字段
         if (name !== normalizeName && name.toUpperCase() === normalizeName.toUpperCase()) {
             headers[normalizeName] = headers[name]
             delete headers[name]

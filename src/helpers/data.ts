@@ -2,7 +2,7 @@ import { isPlainObject } from "./util";
 
 
 //请求的data如果是普通对象，转换成JSON字符串
-export function transformRequest(data:any):any{
+export function transformRequestData(data:any):any{
     if(isPlainObject(data)){
         //普通对象需要转为JSON字符串才能被写进body被传递
         return JSON.stringify(data)
@@ -11,7 +11,7 @@ export function transformRequest(data:any):any{
 }
 
 //响应的data从JSON字符串转为普通对象
-export function transformResponse(data:any):any{
+export function transformResponseData(data:any):any{
     if(typeof data === 'string'){
         try{
             data = JSON.parse(data)

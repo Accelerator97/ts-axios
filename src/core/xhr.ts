@@ -69,7 +69,8 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
                 )
             )
         }
-
+        
+        //处理超时
         request.ontimeout = function handleTimeout() {
             reject(
                 createError(

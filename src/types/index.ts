@@ -1,6 +1,6 @@
 export type Method = 'get' | 'GET' | 'delete' | 'DELETE' | 'head' | 'HEAD' | 'options' | 'OPTIONS' | 'post' | 'POST' | 'put' | 'PUT' | 'patch' | 'PATCH'
 
-export interface AxiosRequestConfig {
+export interface AxiosRequestConfig {  
     url?: string,
     method?: Method,
     data?: any
@@ -11,6 +11,9 @@ export interface AxiosRequestConfig {
     responseType?: XMLHttpRequestResponseType
     //设置请求的超时时间，当请求发送后超过某个时间后仍然没收到响应，则请求自动终止，并触发 timeout 事件
     timeout?: number
+    //默认配置添加了 transformRequest 和 transformResponse 两个字段，它们的值是一个数组或者是一个函数
+    transformRequest?:AxiosTransformer | AxiosTransformer[],
+    transformResponse?:AxiosTransformer | AxiosTransformer[],
     [propName:string]:any
 }
 
@@ -87,7 +90,10 @@ export interface RejectedFn {
     (err: any): any
 }
 
-
+//默认配置添加 transformRequest 和 transformResponse 两个字段，它们的值是一个数组或者是一个函数。
+export interface AxiosTransformer{
+    (data:any,headers?:any):any
+}
 
 
 

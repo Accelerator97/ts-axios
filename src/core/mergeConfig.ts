@@ -32,10 +32,10 @@ function deepMergeStrat(val1:any,val2:any):any{
 
 const stratKeysFromVal2 = ['url', 'params', 'data']
 stratKeysFromVal2.forEach(key => {
-    strats[key] = fromVal2Strat //上述字段的合并策略直接指向fromVal2Strat
+    strats[key] = fromVal2Strat //上述字段的合并策略直接指向fromVal2Strat策略
 })
 
-const stratKeysDeepMerge = ['headers']
+const stratKeysDeepMerge = ['headers','auth']
 stratKeysDeepMerge.forEach(key=>{
     strats[key] = deepMergeStrat
 })
@@ -56,7 +56,7 @@ export default function mergeConfig(
     }
     //再对config1进行合并
     for (let key in config1) {
-        //判断字段没有在config1出现过
+        //判断字段没有在config2出现过
         if (!config2[key]) {
             mergeFiled(key)
         }
@@ -65,9 +65,8 @@ export default function mergeConfig(
     function mergeFiled(key: string): void {
         //不同字段对应不同的合并策略函数
         const strat = strats[key] || defaultStrat
-        config[key] = strat(config1[key], config2![key])
+        config[key] = strat(config1[key], config2[key])
     }
-
     return config
 }
 
