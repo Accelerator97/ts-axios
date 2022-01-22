@@ -96,4 +96,10 @@ export interface AxiosTransformer{
 }
 
 
+//扩展静态接口
+//通过axios.create创造一个新的axios实例
+export interface AxiosStatic extends AxiosInstance{
+    create(config?:AxiosRequestConfig):AxiosInstance
+}
+
 
