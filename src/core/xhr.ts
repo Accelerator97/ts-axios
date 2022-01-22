@@ -6,7 +6,7 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
     //Promise封装一个异步请求，用户可以通过then处理服务端返回的数据
     return new Promise((resolve, reject) => {
         //config是用户设置的请求信息
-        const { data = null, url, method = 'get', headers, responseType, timeout } = config
+        const { data = null, url, method = 'get', headers, responseType, timeout,cancelToken } = config
         const request = new XMLHttpRequest()
         //如果用户指定了返回数据的类型
         if (responseType) {
@@ -69,7 +69,7 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
                 )
             )
         }
-        
+
         //处理超时
         request.ontimeout = function handleTimeout() {
             reject(
@@ -92,6 +92,14 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
         })
         
         request.send(data)
+        //首先判断用户是否配置的cancelToken，如果没有配置，表示没有取消请求这项需求；
+        //如果配置cancelToken，并且当外部调用了请求取消触发函数，此时cancelToken.promise会变成resolved 状态，然后就会执行then函数，在then函数内部调用XMLHttpRequest对象上的abort()取消请求
+        if (cancelToken){
+            cancelToken.promise.then(reason => {
+                request.abort();
+                reject(reason)
+            })
+        } 
     })
 
 }

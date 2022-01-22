@@ -14,6 +14,8 @@ export interface AxiosRequestConfig {
     //默认配置添加了 transformRequest 和 transformResponse 两个字段，它们的值是一个数组或者是一个函数
     transformRequest?:AxiosTransformer | AxiosTransformer[],
     transformResponse?:AxiosTransformer | AxiosTransformer[],
+    //CancelToken 是实例类型的接口定义，Canceler 是取消方法的接口定义，CancelExecutor 是 CancelToken 类构造函数参数的接口定义
+    cancelToken?:CancelToken
     [propName:string]:any
 }
 
@@ -102,4 +104,29 @@ export interface AxiosStatic extends AxiosInstance{
     create(config?:AxiosRequestConfig):AxiosInstance
 }
 
+//CancelTokenStatic 则作为 CancelToken 类的类型
+export interface CancelTokenStatic {
+    new(executor:CancelExecutor):CancelToken
+    source():CancelTokenSource
+}
 
+//CancelTokenSource 作为 CancelToken 类静态方法 source 函数的返回值类型
+export interface CancelTokenSource {
+    token:CancelToken,
+    cancel:Canceler
+}
+
+export interface CancelToken {
+    promise:Promise<string>,
+    reason?:string
+}
+
+
+export interface Canceler {
+    (message?:string):void
+}
+
+//因为CancelToken类的构造函数接收一个函数作为参数，因此，我们也需要定义一个该参数函数的类型。该参数函数又接收一个取消函数作为参数，它的类型是Canceler
+export interface CancelExecutor{
+    (cancel:Canceler):void
+}
