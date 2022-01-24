@@ -32,7 +32,8 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
             xsrfCookieName,
             xsrfHeaderName,
             onDownloadProgress,
-            onUploadProgress
+            onUploadProgress,
+            auth
         } = config
         const request = new XMLHttpRequest()
         //true开启异步
@@ -126,6 +127,11 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
                     headers[xsrfHeaderName!] = xsrfValue
                 }
             }
+            //如果用户设置了auth,如果配置了就把该属性经过base64 加密后添加到请求 headers 中的 Authorization 属性上
+            if (auth) {
+                headers['Authorization'] = `Basic ${btoa(`${auth.username} : ${auth.password}`)}`
+            }
+
 
             //如果传入的data为空，请求headers配置Content-Type是没有意义的，所以删除掉
             Object.keys(headers).forEach(name => {
@@ -149,7 +155,7 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
                 })
             }
         }
-        
+
         function handleResponse(response: AxiosResponse) {
             if (response.status >= 200 && response.status < 300) {
                 resolve(response)

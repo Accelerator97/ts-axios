@@ -67,7 +67,7 @@ registerConfigRouter()
 //demo cancel所需路由
 registerCancelRouter()
 
-//demo withCredential/defendXSRF所需路由
+//demo withCredential/defendXSRF/HTTPAuthorization所需路由
 registerMoreRouter()
 
 //demo progressMonitor所需路由，监控文件上传的进度
@@ -208,18 +208,18 @@ function registerMoreRouter() {
     res.json(req.cookies)
   })
 
-//   router.post('/more/post', function (req, res) {
-//     const auth = req.headers.authorization
-//     const [type, credentials] = auth.split(' ')
-//     console.log('atob on server:', atob(credentials))
-//     const [username, password] = atob(credentials).split(':').map(item => item.trim())
-//     if (type === 'Basic' && username === 'chen' && password === '123456') {
-//       res.json(req.body)
-//     } else {
-//       res.status(401)
-//       res.end('UnAuthorization')
-//     }
-//   })
+  //安装第三方库 atob 实现 base64 串的解码
+  router.post('/more/post', function (req, res) {
+    const auth = req.headers.authorization
+    const [type, credentials] = auth.split(' ')
+    const [username, password] = atob(credentials).split(':').map(item => item.trim())
+    if (type === 'Basic' && username === 'NLRX' && password === '123456') {
+      res.json('Authorization')
+    } else {
+      res.status(401)
+      res.end('UnAuthorization')
+    }
+  })
 
 //   router.get('/more/304', function (req, res) {
 //     res.status(304)
