@@ -65,3 +65,15 @@ export function buildURL(url: string, params?: any, paramsSerializer?: (params: 
     }
     return url
 }
+
+// 如果URL以“<scheme>：//”或“//”（协议相对URL）开头，则该URL被视为绝对值。
+// RFC 3986将方案名称定义为以字母开头的字符序列，
+// 后跟字母，数字，加号，句点或连字符的任意组合。
+export function isAbsoluteURL(url: string): boolean {
+    return /^([a-z][a-z\d\+\-\.]*:)?\/\//i.test(url)
+}
+
+export function combineURL(baseURL: string, relativeURL?: string): string {
+    return relativeURL ? baseURL.replace(/\/+$/, '') + '/' + relativeURL.replace(/^\/+/, '') : baseURL
+}
+

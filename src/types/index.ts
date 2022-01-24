@@ -44,6 +44,7 @@ export interface AxiosRequestConfig {
   validateStatus?: (status: Number) => Boolean
   //自定义解析规则 对url参数进行处理
   paramsSerializer?: (params: any) => string
+  baseURL?: string
   [propName: string]: any
 }
 

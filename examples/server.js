@@ -73,6 +73,8 @@ registerMoreRouter()
 //demo progressMonitor所需路由，监控文件上传的进度
 registerUploadRouter()
 
+registerBaseURL()
+
 app.use(router)
 
 const port = process.env.PORT || 8085
@@ -241,3 +243,8 @@ function registerUploadRouter() {
   })
 }
 
+function registerBaseURL(){
+  router.get("/baseURL/get", function(req, res) {
+    res.end();
+  });
+}
