@@ -31,11 +31,14 @@ export interface AxiosRequestConfig {
   //CancelToken 是实例类型的接口定义，Canceler 是取消方法的接口定义，CancelExecutor 是 CancelToken 类构造函数参数的接口定义
   cancelToken?: CancelToken
   //跨域情况下要设置为true才会携带cookie
-  withCredentials?: boolean,
+  withCredentials?: boolean
   //存放token的cookie名称
-  xsrfCookieName?: string;
+  xsrfCookieName?: string
   //请求 headers 中 token 对应的 header 名称
   xsrfHeaderName?: string
+  //下载和上传进度监控
+  onDownloadProgress?: (e: ProgressEvent) => void
+  onUploadProgress?: (e: ProgressEvent) => void
   [propName: string]: any
 }
 

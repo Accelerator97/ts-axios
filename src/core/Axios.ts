@@ -91,13 +91,13 @@ export default class Axios {
         return this._requestMethodWithoutData('options', url, config)
     }
     //post、put、patch的参数多了data
-    post(url: string, config?: AxiosRequestConfig, data?: any): AxiosPromise {
+    post(url: string, data?: any,config?: AxiosRequestConfig): AxiosPromise {
         return this._requestMethodWithData('post', url, config, data)
     }
-    put(url: string, config?: AxiosRequestConfig, data?: any): AxiosPromise {
+    put(url: string,  data?: any,config?: AxiosRequestConfig): AxiosPromise {
         return this._requestMethodWithData('put', url, config, data)
     }
-    patch(url: string, config?: AxiosRequestConfig, data?: any): AxiosPromise {
+    patch(url: string, data?: any,config?: AxiosRequestConfig ): AxiosPromise {
         return this._requestMethodWithData('patch', url, config, data)
     }
 

@@ -39,10 +39,10 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(cookieParser()) //解析请求的cookie
 
-// // 用于将文件上传到指定文件
-// app.use(mutipart({
-//   uploadDir: path.resolve(__dirname, 'accept-upload-file')
-// }))
+// 用于将文件上传到指定文件夹下
+app.use(mutipart({
+  uploadDir: path.resolve(__dirname, 'upload-files')
+}))
 
 const router = express.Router()
 
@@ -69,6 +69,9 @@ registerCancelRouter()
 
 //demo withCredential/defendXSRF所需路由
 registerMoreRouter()
+
+//demo progressMonitor所需路由，监控文件上传的进度
+registerUploadRouter()
 
 app.use(router)
 
@@ -232,10 +235,9 @@ function registerMoreRouter() {
 //   })
 }
 
-// function registerUploadRouter() {
-//   router.post('/upload-download/upload', function (req, res) {
-//     console.log(req.body, req.files)
-//     res.end('upload success!')
-//   })
-// }
+function registerUploadRouter() {
+  router.post('/upload-download/upload', function (req, res) {
+    res.end('upload success!')
+  })
+}
 
