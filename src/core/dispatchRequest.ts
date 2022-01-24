@@ -28,7 +28,7 @@ function throwIfCancellationRequested(config: AxiosRequestConfig): void {
 }
 
 //先判断传入的url是否是绝对地址，如果不是，则将baseURL与传入的url进行拼接；拼接好之后，将拼接后的url作为请求真正的url发送请求
-function transformUrl(config: AxiosRequestConfig): string {
+export function transformUrl(config: AxiosRequestConfig): string {
   let { url, params,paramsSerializer,baseURL } = config
   if (baseURL && !isAbsoluteURL(url!)) {
     url = combineURL(baseURL, url);

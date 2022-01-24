@@ -73,6 +73,7 @@ registerMoreRouter()
 //demo progressMonitor所需路由，监控文件上传的进度
 registerUploadRouter()
 
+//定义baseURL 
 registerBaseURL()
 
 app.use(router)
@@ -228,13 +229,13 @@ function registerMoreRouter() {
     res.end()
   })
 
-//   router.get('/more/A', function (req, res) {
-//     res.end('A')
-//   })
+  router.get('/more/A', function (req, res) {
+    res.end('A')
+  })
 
-//   router.get('/more/B', function (req, res) {
-//     res.end('B')
-//   })
+  router.get('/more/B', function (req, res) {
+    res.end('B')
+  })
 }
 
 function registerUploadRouter() {

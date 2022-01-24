@@ -63,7 +63,7 @@ export interface AxiosResponse<T = any> {
 //axios 函数返回的是一个 Promise 对象,可以定义一个 AxiosPromise 接口，它继承于 Promise<AxiosResponse> 这个泛型接口
 //当 axios 返回的是 AxiosPromise 类型，那么 resolve 函数中的参数就是一个 AxiosResponse 类型。
 //接口添加泛型参数
-export interface AxiosPromise<T = any> extends Promise<AxiosResponse<T>> {}
+export interface AxiosPromise<T = any> extends Promise<AxiosResponse<T>> { }
 
 //对外提供的信息不仅仅包含错误文本信息，还包括了请求对象配置 config，错误代码 code，XMLHttpRequest 对象实例 request以及自定义响应对象 response
 export interface AxiosError extends Error {
@@ -90,6 +90,8 @@ export interface Axios {
   post<T = any>(url: string, data?: any, config?: AxiosRequestConfig): AxiosPromise<T>
   put<T = any>(url: string, data?: any, config?: AxiosRequestConfig): AxiosPromise<T>
   patch<T = any>(url: string, data?: any, config?: AxiosRequestConfig): AxiosPromise<T>
+  //getUri 方法在不发送请求的前提下根据传入的配置返回一个 url
+  getUri?: (config?: AxiosRequestConfig) => string;
 }
 
 //混合类型的接口，拥有Axios下的各种方法
@@ -132,11 +134,19 @@ export interface AxiosStatic extends AxiosInstance {
   CancelToken: CancelTokenStatic
   Cancel: CancelStatic
   isCancel: (value: any) => boolean
+  all<T>(promises: Array<T | Promise<T>>): Promise<T[]>;
+  spread<T, R>(callback: (...args: T[]) => R): (arr: T[]) => R;
+  Axios: AxiosClassStatic
+}
+
+//axios.Axios 对外暴露了 Axios 类
+export interface AxiosClassStatic {
+  new (config: AxiosRequestConfig): Axios
 }
 
 //CancelTokenStatic 作为 CancelToken 类的类型
 export interface CancelTokenStatic {
-  new (executor: CancelExecutor): CancelToken
+  new(executor: CancelExecutor): CancelToken
   source(): CancelTokenSource
 }
 
@@ -172,7 +182,7 @@ export interface CancelInstance {
 }
 
 export interface CancelStatic {
-  new (message?: string): CancelInstance
+  new(message?: string): CancelInstance
 }
 
 export interface AxiosBasicCredentials {
