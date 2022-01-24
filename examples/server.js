@@ -9,7 +9,8 @@ const webpackHotMiddleware = require('webpack-hot-middleware')
 const WebpackConfig = require('./webpack.config')
 const path = require('path')
 
-// require('./server2')
+//引入server2 这样同时启动两个服务器
+require('./server2')
 
 const app = express()
 //直接引入webpack 进行编译 编译的结果作为middleware的参数
@@ -34,7 +35,7 @@ app.use(express.static(__dirname))
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
-// app.use(cookieParser())
+app.use(cookieParser()) //解析请求的cookie
 
 // // 用于将文件上传到指定文件
 // app.use(mutipart({
@@ -63,6 +64,9 @@ registerConfigRouter()
 
 //demo cancel所需路由
 registerCancelRouter()
+
+//demo withCredential所需路由
+registerMoreRouter()
 
 app.use(router)
 
@@ -194,10 +198,10 @@ function registerCancelRouter() {
   })
 }
 
-// function registerMoreRouter() {
-//   router.get('/more/get', (req, res) => {
-//     res.json(req.cookies)
-//   })
+function registerMoreRouter() {
+  router.get('/more/get', function (req, res) {
+    res.json(req.cookies)
+  })
 
 //   router.post('/more/post', function (req, res) {
 //     const auth = req.headers.authorization
@@ -224,7 +228,7 @@ function registerCancelRouter() {
 //   router.get('/more/B', function (req, res) {
 //     res.end('B')
 //   })
-// }
+}
 
 // function registerUploadRouter() {
 //   router.post('/upload-download/upload', function (req, res) {

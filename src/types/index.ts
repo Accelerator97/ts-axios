@@ -30,6 +30,7 @@ export interface AxiosRequestConfig {
   transformResponse?: AxiosTransformer | AxiosTransformer[]
   //CancelToken 是实例类型的接口定义，Canceler 是取消方法的接口定义，CancelExecutor 是 CancelToken 类构造函数参数的接口定义
   cancelToken?: CancelToken
+  withCredentials?: boolean
   [propName: string]: any
 }
 
