@@ -36,7 +36,7 @@ axios.all = function all(promises) {
     return Promise.all(promises)
 }
 
-//axios.spread方法接收一个函数作为参数，该参数函数的参数也是所有请求的响应，既然上文说了axios.all方法与Promise.all方法是一模一样的，那么我们只需想办法再让两个then方法相同即可。也就是说我们创建一个axios.spread方法并且让axios.spread((acct, perms) => {})的返回值与([acct,perms]) => {}等价即可。
+//axios.all 就是 Promise.all 的封装，它返回的是一个 Promise 数组，then 函数的参数本应是一个参数为 Promise resolves（数组）的函数，在这里使用了 axios.spread 方法。所以 axios.spread 方法是接收一个函数，返回一个新的函数，新函数的结构满足 then 函数的参数结构
 axios.spread = function spread(callback) {
     return function wrap(arr) {
         return callback.apply(null, arr)

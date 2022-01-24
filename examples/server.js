@@ -244,8 +244,8 @@ function registerUploadRouter() {
   })
 }
 
-function registerBaseURL(){
-  router.get("/baseURL/get", function(req, res) {
+function registerBaseURL() {
+  router.get("/baseURL/get", function (req, res) {
     res.end();
   });
 }
