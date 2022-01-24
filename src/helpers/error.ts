@@ -1,7 +1,7 @@
 import { AxiosRequestConfig,AxiosResponse } from "../types";
 
 export class AxiosError extends Error{
-    //这是AxiosError自身有的属性
+    //以下是AxiosError自身有的属性
     isAxiosError:boolean
     config: AxiosRequestConfig;
     code?:string | null
@@ -23,7 +23,7 @@ export class AxiosError extends Error{
         this.response = response
           
 
-        //这是为了解决ts在继承一些内置对象时会出现bug ，无法访问原型链上的属性和方法，需要指定实例的原型为AxiosError.prototype
+        //这是为了解决ts在继承一些内置对象时会出现bug ，无法访问原型链上的属性和方法，需要指定实例对象的原型为AxiosError.prototype
         Object.setPrototypeOf(this,AxiosError.prototype)
     }
 }
