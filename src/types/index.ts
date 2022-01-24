@@ -41,7 +41,9 @@ export interface AxiosRequestConfig {
   onUploadProgress?: (e: ProgressEvent) => void
   auth?: AxiosBasicCredentials
   //状态码校验函数，接收状态码作为函数参数，返回校验结果true或false
-  validateStatus?: (status: Number) => Boolean;
+  validateStatus?: (status: Number) => Boolean
+  //自定义解析规则 对url参数进行处理
+  paramsSerializer?: (params: any) => string
   [propName: string]: any
 }
 
