@@ -25,11 +25,13 @@ app.use(webpackDevMiddleware(complier, {
 }))
 
 app.use(webpackHotMiddleware(complier))
-// app.use(express.static(__dirname, {
-//   setHeaders(res) {
-//     res.cookie('XSRF-TOKEN-D', Math.random().toString(16).slice(2))
-//   }
-// }))
+//在访问页面的时候，服务端通过 set-cookie 往客户端种了 key 为 XSRF-TOKEN，值为 随机数 的 cookie
+//然后在前端发送请求的时候，就能从 cookie 中读出 key 为 XSRF-TOKEN 的值，然后把它添加到 key 为 X-XSRF-TOKEN 的请求 headers 中。
+app.use(express.static(__dirname, {
+  setHeaders(res) {
+    res.cookie('XSRF-TOKEN-D', Math.random().toString(16).slice(2))
+  }
+}))
 
 app.use(express.static(__dirname))
 
@@ -65,7 +67,7 @@ registerConfigRouter()
 //demo cancel所需路由
 registerCancelRouter()
 
-//demo withCredential所需路由
+//demo withCredential/defendXSRF所需路由
 registerMoreRouter()
 
 app.use(router)
