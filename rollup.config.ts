@@ -10,13 +10,15 @@ const pkg = require('./package.json')
 const libraryName = 'ts-axios'
 
 export default {
-  input: `src/${libraryName}.ts`,
+  input: `src/index.ts`,
   output: [
     { file: pkg.main, name: camelCase(libraryName), format: 'umd', sourcemap: true },
     { file: pkg.module, format: 'es', sourcemap: true },
   ],
   // Indicate here external modules you don't wanna include in your bundle (i.e.: 'lodash')
+  //外部依赖
   external: [],
+  //监听文件变化重新编译
   watch: {
     include: 'src/**',
   },

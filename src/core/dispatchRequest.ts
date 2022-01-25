@@ -7,9 +7,18 @@ import transform from './transform'
 function dispatchRequest(config: AxiosRequestConfig): AxiosPromise {
   throwIfCancellationRequested(config)
   processConfig(config)
-  return xhr(config).then((res: AxiosResponse) => {
-    return transformResponseData(res)
-  })
+  //除了对正常情况的响应数据做转换，我们也需要对异常情况的响应数据做转换
+  return xhr(config).then(
+    (res: AxiosResponse) => {
+      return transformResponseData(res)
+    },
+    e => {
+      if (e && e.response) {
+        e.response = transformResponseData(e.response)
+      }
+      return Promise.reject(e)
+    }
+  )
 }
 
 function processConfig(config: AxiosRequestConfig): void {
@@ -29,11 +38,11 @@ function throwIfCancellationRequested(config: AxiosRequestConfig): void {
 
 //先判断传入的url是否是绝对地址，如果不是，则将baseURL与传入的url进行拼接；拼接好之后，将拼接后的url作为请求真正的url发送请求
 export function transformUrl(config: AxiosRequestConfig): string {
-  let { url, params,paramsSerializer,baseURL } = config
+  let { url, params, paramsSerializer, baseURL } = config
   if (baseURL && !isAbsoluteURL(url!)) {
     url = combineURL(baseURL, url);
   }
-  return buildURL(url!, params,paramsSerializer)
+  return buildURL(url!, params, paramsSerializer)
 }
 function transformHeaders(config: AxiosRequestConfig): string {
   const { headers = {}, data } = config

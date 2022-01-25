@@ -27,12 +27,13 @@ export default class CancelToken {
       resolvePromise(this.reason)
     })
   }
+  //如当一个请求携带的 cancelToken 已经被使用过，那么我们甚至都可以不发送这个请求，只需要抛一个异常即可，并且抛异常的信息就是我们取消的原因
   throwIfRequested(): void {
     if (this.reason) {
-      console.log(this.reason)
       throw this.reason
     }
   }
+
   //source方法返回的是一个对象，里面包含两个属性，分别是：CancelToken类的实例对象token，类型是CancelToken和触发函数cancel，类型是Canceler
   static source(): CancelTokenSource {
     let cancel!: Canceler

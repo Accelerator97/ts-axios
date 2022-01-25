@@ -1,5 +1,5 @@
 import { AxiosRequestConfig, AxiosPromise, Method, AxiosResponse, ResolvedFn, RejectedFn } from "../types";
-import dispatchRequest,{transformUrl} from "./dispatchRequest";
+import dispatchRequest, { transformUrl } from "./dispatchRequest";
 import InterceptorManager from "./InterceptorManager";
 import mergeConfig from "./mergeConfig";
 
@@ -16,11 +16,11 @@ interface PromiseChain {
 
 //文件名首字母大写表明它是一个类
 export default class Axios {
-    defaults:AxiosRequestConfig
+    defaults: AxiosRequestConfig
     //定义一个interceptors对象，这个对象拥有两个属性request和response。然后在constructor中进行初始化new InterceptorManager 
     //InterceptorManager 这个类上有use方法、forEach方法和eject方法
     interceptors: Interceptors
-    constructor(initConfig:AxiosRequestConfig) {
+    constructor(initConfig: AxiosRequestConfig) {
         this.defaults = initConfig
         this.interceptors = {
             //request是对config进行操作，response是对响应信息进行操作
@@ -46,6 +46,8 @@ export default class Axios {
         }
         //根据用户传入的配置和默认配置进行合并
         config = mergeConfig(this.defaults, config)
+        //将config的方法转化为小写,这么做的目的也是为了之后 flattenHeaders(处理响应请求头的函数) 能正常处理这些 method
+        config.method = config.method.toLowerCase()
 
         //构造一个 PromiseChain 类型的数组 chain，并把 dispatchRequest 函数赋值给 resolved 属性
         const chain: PromiseChain[] = [{
@@ -91,20 +93,20 @@ export default class Axios {
         return this._requestMethodWithoutData('options', url, config)
     }
     //post、put、patch的参数多了data
-    post(url: string, data?: any,config?: AxiosRequestConfig): AxiosPromise {
+    post(url: string, data?: any, config?: AxiosRequestConfig): AxiosPromise {
         return this._requestMethodWithData('post', url, config, data)
     }
-    put(url: string,  data?: any,config?: AxiosRequestConfig): AxiosPromise {
+    put(url: string, data?: any, config?: AxiosRequestConfig): AxiosPromise {
         return this._requestMethodWithData('put', url, config, data)
     }
-    patch(url: string, data?: any,config?: AxiosRequestConfig ): AxiosPromise {
+    patch(url: string, data?: any, config?: AxiosRequestConfig): AxiosPromise {
         return this._requestMethodWithData('patch', url, config, data)
     }
 
     getUri(config?: AxiosRequestConfig): string {
-        config = mergeConfig(this.defaults, config!);
-        return transformUrl(config!);
-      }
+        let finalConfig = mergeConfig(this.defaults, config);
+        return transformUrl(finalConfig);
+    }
 
     _requestMethodWithoutData(method: Method, url: string, config?: AxiosRequestConfig) {
         return this.request((Object.assign(config || {}, {

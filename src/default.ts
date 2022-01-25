@@ -14,7 +14,7 @@ const defaultConfig: AxiosRequestConfig = {
         }
     },
     //默认配置添加了 transformRequest 和 transformResponse 两个字段
-    //它们的值是一个数组或者是一个函数
+    //它们的值是一个函数数组或者是一个函数
     transformRequest: [
         function (data: any, headers: any): any {
             processHeaders(headers, data)

@@ -1,7 +1,7 @@
 import { AxiosPromise, AxiosRequestConfig, AxiosResponse } from '../types'
 import { parseHeaders } from '../helpers/headers'
 import { createError } from '../helpers/error'
-import isURLSameOrigin from '../helpers/isURLSameOrigin'
+import { isURLSameOrigin } from '../helpers/url'
 import cookie from '../helpers/cookie'
 import { isFormData } from '../helpers/util'
 
@@ -96,7 +96,7 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
 
             //处理网络错误
             request.onerror = function handleError() {
-                reject(createError('Newwork Error', config, null, request))
+                reject(createError('Network Error', config, null, request))
             }
 
             //处理超时
@@ -150,10 +150,14 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
             //首先判断用户是否配置的cancelToken，如果没有配置，表示没有取消请求这项需求；
             //如果配置cancelToken，并且当外部调用了请求取消触发函数，此时cancelToken.promise会变成resolved 状态，然后就会执行then函数，在then函数内部调用XMLHttpRequest对象上的abort()取消请求
             if (cancelToken) {
-                cancelToken.promise.then(reason => {
-                    request.abort()
-                    reject(reason)
-                })
+                cancelToken.promise
+                    .then(reason => {
+                        request.abort()
+                        reject(reason)
+                    })
+                    .catch(() => {
+                        //do nothing
+                    })
             }
         }
 

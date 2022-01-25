@@ -3,7 +3,7 @@ import { AxiosRequestConfig } from "../types";
 
 const strats = Object.create(null)
 
-//合并策略
+//合并策略 3种策略
 //1.优先获取配置2相应字段的值，如果配置2相应字段没有值，则用配置1相应字段的值
 function defaultStrat(val1: any, val2: any): any {
     return typeof val2 !== 'undefined' ? val2 : val1
@@ -16,15 +16,15 @@ function fromVal2Strat(val1: any, val2: any): any {
     }
 }
 
-//3.深度合并策略，例如headers
+//3.深度合并策略，例如headers、auth字段
 function deepMergeStrat(val1:any,val2:any):any{
     if(isPlainObject(val2)){ //情况1：val2存在并且是一个普通对象
         return deepMerge(val1,val2) 
-    }else if(typeof val2 !== 'undefined'){ //情况2:val存在但不是普通对象
+    }else if(typeof val2 !== 'undefined'){ //情况2:val2存在但不是普通对象
         return val2
     }else if(isPlainObject(val1)){ //情况3：val2不存在并且val1是一个普通对象
         return deepMerge(val1)
-    }else if(typeof val1 !== 'undefined'){ //情况4：val2不存在并且val1不是一个普通对象
+    }else { //情况4：val2不存在并且val1不是一个普通对象
         return val1
     }
 
@@ -42,7 +42,7 @@ stratKeysDeepMerge.forEach(key=>{
 
 export default function mergeConfig(
     config1: AxiosRequestConfig,
-    config2: AxiosRequestConfig
+    config2?: AxiosRequestConfig
 ): any {
     if (!config2) {
         config2 = {}
@@ -65,7 +65,7 @@ export default function mergeConfig(
     function mergeFiled(key: string): void {
         //不同字段对应不同的合并策略函数
         const strat = strats[key] || defaultStrat
-        config[key] = strat(config1[key], config2[key])
+        config[key] = strat(config1[key], config2![key])
     }
     return config
 }
