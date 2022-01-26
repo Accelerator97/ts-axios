@@ -40,7 +40,7 @@ describe('requests', () => {
     })
   })
 
-  //这个会发出真正的axios请求，因为没有响应 会报connect ECONNREFUSED错误
+  //这个会发出真正的axios请求，因为没有响应 会报connect ECONNREFUSED
   test('should reject on network errors', done => {
     const resolveSpy = jest.fn((res: AxiosResponse) => {
       return res
