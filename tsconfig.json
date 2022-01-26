@@ -26,5 +26,9 @@
   ],
   "exclude": [
     "node_modules",
-  ]
+  ],
+  "comment-format": [
+    false,
+    "check-space"
+  ],
 }

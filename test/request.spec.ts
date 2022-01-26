@@ -40,7 +40,7 @@ describe('requests', () => {
     })
   })
 
-  //这个会发出真正的axios请求，因为没有响应 会报connect ECONNREFUSED
+  // 这个会发出真正的axios请求，因为没有响应 会报connect ECONNREFUSED
   //   test('should reject on network errors', done => {
   //     const resolveSpy = jest.fn((res: AxiosResponse) => {
   //       return res
@@ -82,8 +82,8 @@ describe('requests', () => {
 
     getAjaxRequest().then(request => {
       //由于 request.responseTimeout 方法内部依赖了 jasmine.clock 方法会导致运行失败，这里用了 request.eventBus.trigger('timeout') 方法触发了 timeout 事件。
-      //因为这个方法不在接口定义中，所以需要加  @ts-ignore。
-      // @ts-ignore
+      // 因为这个方法不在接口定义中，所以需要加  @ts-ignore。
+      //  @ts-ignore
       request.eventBus.trigger('timeout')
       setTimeout(() => {
         expect(err instanceof Error).toBeTruthy()
@@ -93,7 +93,7 @@ describe('requests', () => {
     })
   })
 
-  //用户自定义合法状态码
+  // 用户自定义合法状态码
   test('should resolve when validateStatus returns true', done => {
     const resolveSpy = jest.fn((res: AxiosResponse) => {
       return res

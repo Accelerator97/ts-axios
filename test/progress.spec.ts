@@ -30,9 +30,9 @@ describe('progress', () => {
     axios('/foo', { onUploadProgress: progressSpy })
 
     return getAjaxRequest().then(request => {
-      //jasmine-ajax 插件不会派发 upload 事件 目前不写断言的情况它会直接通过
-      // Jasmine AJAX doesn't trigger upload events.Waiting for jest-ajax fix
-      // expect(progressSpy).toHaveBeenCalled()
+      // jasmine-ajax 插件不会派发 upload 事件 目前不写断言的情况它会直接通过
+      //  Jasmine AJAX doesn't trigger upload events.Waiting for jest-ajax fix
+      //  expect(progressSpy).toHaveBeenCalled()
     })
   })
 })
