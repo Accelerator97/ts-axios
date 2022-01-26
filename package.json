@@ -1,6 +1,6 @@
 {
-  "name": "ts-axios-ben",
-  "version": "0.0.2",
+  "name": "axios-ts-ben",
+  "version": "0.0.1",
   "description": "",
   "keywords": [],
   "main": "dist/ts-axios.umd.js",
