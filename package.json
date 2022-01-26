@@ -12,7 +12,7 @@
   "author": "xuebin <928691436@qq.com>",
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "git+https://github.com/Accelerator97/ts-axios"
   },
   "license": "MIT",
   "engines": {
