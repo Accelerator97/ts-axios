@@ -5,10 +5,8 @@ cache:
 notifications:
   email: false
 node_js:
-  - '10'
-  - '11'
-  - '8'
-  - '6'
+  - '12'
+  - '14'
 install:
   - npm install --registry=https://registry.npm.taobao.org
   - echo "install successed"
