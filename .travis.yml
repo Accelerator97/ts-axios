@@ -7,15 +7,16 @@ notifications:
 node_js:
   - '12'
   - '14'
+addons:
+  chrome: stable //设置插件，谷歌浏览器最稳定的版本
 install:
   - npm install --registry=https://registry.npm.taobao.org
   - echo "install successed"
 script:
   - npm run test:prod && npm run build
-after_success:
-  - npm run travis-deploy-once "npm run report-coverage"
-  - if [ "$TRAVIS_BRANCH" = "master" -a "$TRAVIS_PULL_REQUEST" = "false" ]; then npm run travis-deploy-once "npm run deploy-docs"; fi
-  - if [ "$TRAVIS_BRANCH" = "master" -a "$TRAVIS_PULL_REQUEST" = "false" ]; then npm run travis-deploy-once "npm run semantic-release"; fi
+before_script:
+ - "sudo chown root /opt/google/chrome/chrome-sandbox"
+ - "sudo chmod 4755 /opt/google/chrome/chrome-sandbox"
 branches:
   except:
     - /^v\d+\.\d+\.\d+$/
