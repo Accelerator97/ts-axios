@@ -1,4 +1,4 @@
-import CancelToken from '../../src/cancel/CancelToken'
+import { CancelToken } from '../../src/cancel/CancelToken'
 import { Cancel } from '../../src/cancel/Cancel'
 import { Canceler } from '../../src/types'
 

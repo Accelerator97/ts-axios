@@ -3,7 +3,7 @@ import { AxiosRequestConfig, AxiosStatic } from './types'
 import { extend } from './helpers/util'
 import defaultConfig from './default'
 import mergeConfig from './core/mergeConfig'
-import CancelToken from './cancel/CancelToken'
+import { CancelToken } from './cancel/CancelToken'
 import { Cancel, isCancel } from './cancel/Cancel'
 
 // instance本身是一个函数，但是又拥有Axios类上的所有原型和实例属性
