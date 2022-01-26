@@ -8,7 +8,7 @@ node_js:
   - '12'
   - '14'
 addons:
-  chrome: stable //设置插件，谷歌浏览器最稳定的版本
+  chrome: stable 
 install:
   - npm install --registry=https://registry.npm.taobao.org
   - echo "install successed"
